@@ -488,8 +488,6 @@ summary(df1$Time.elapsed)
 ftable1 <- CreateTableOne(data=df1,includeNA =F,strata="status", test=T)
 print(ftable1, showAllLevels = T)
 
-###removing unnecessary variables
-df1$userid<- NULL
 ##Drop country
 df1$country<- NULL
 #n=387, p=39
@@ -524,8 +522,13 @@ duration_comparison <- lapply(time_points, function(t) {
 
 print(duration_comparison)
 
-###saving unimputed data
+###saving unimputed data with userid
+write.csv(df1, "unimputed_dataset_final_userid.csv")
+
+####Saving unimputed dataset without userid
+df1$userid<- NULL
 write.csv(df1, "unimputed_dataset_final.csv")
+df_unimputed<- df1
 
 ###Missing data
 sapply(df1, function(x) sum(is.na(x)))
@@ -570,12 +573,10 @@ summary(imputed)
 df1 <- complete(imputed,1)
 
 sapply(df1, function(x) sum(is.na(x)))
-vis_miss(df1,sort_miss=TRUE) 
+vis_miss(df1,sort_miss=TRUE)
 ##All imputed
 
 #saving imputed df1aset
 write.csv(df1, "imputed_dataset_final.csv")
-
-
 
 
